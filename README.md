@@ -1,6 +1,6 @@
 # CampusEats
 
-Web Services project for a campus food ordering system.
+CampusEats is a Web Services project designed as a campus food ordering system. It allows students and campus staff to browse available food, view menus, and place orders from campus food providers. The project focuses on understanding how web services communicate through HTTP requests and responses and how a larger system can be organized into clear services.
 
 ## Team Members
 
@@ -9,8 +9,15 @@ Web Services project for a campus food ordering system.
 - Aman Chouhan
 - Sanu Sawarnakar
 
-## Files
+## Project Files
 
-- `brief.md` — CampusEats system brief
-- `http-log.md` — HTTP request/response logs
-- `network-analysis.md` — Network analysis
+- `brief.md` — Describes the CampusEats system, its users, important entities, and system actions.
+- `http-log.md` — Contains HTTP requests and responses tested using `curl`.
+- `network-analysis.md` — Contains the browser Network analysis performed using Chrome DevTools.
+
+## Tools Used
+
+- `curl`
+- Chrome DevTools
+- Git
+- GitHub
