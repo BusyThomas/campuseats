@@ -1,16 +1,16 @@
 # CampusEats
 
-This repository contains my Web Services Assignment 1 work.
+Web Services project for a campus food ordering system.
 
-## Contents
+## Team Members
 
-- brief.md — CampusEats system brief
-- http-log.md — HTTP requests and responses using curl
-- network-analysis.md — Browser Network analysis using DevTools
+- Shirish Meshram
+- Deepamoni Boro
+- Aman Chouhan
+- Sanu Sawarnakar
 
-## Tools Used
+## Files
 
-- curl
-- Chrome DevTools
-- Git
-- GitHub
+- `brief.md` — CampusEats system brief
+- `http-log.md` — HTTP request/response logs
+- `network-analysis.md` — Network analysis
