@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+                xmlns:pay="http://paysecure.example.com/payment">
+
+  <soap:Header>
+    <pay:TransactionMeta>
+      <pay:processedAt>2026-08-26T14:32:10Z</pay:processedAt>
+      <pay:gatewayRef>PSG-993201</pay:gatewayRef>
+    </pay:TransactionMeta>
+  </soap:Header>
+
+  <soap:Body>
+    <pay:chargeResponse>
+      <pay:status>APPROVED</pay:status>
+      <pay:transactionId>TXN123456</pay:transactionId>
+      <pay:orderId>ORD-1029</pay:orderId>
+      <pay:amount>300.00</pay:amount>
+      <pay:currency>INR</pay:currency>
+    </pay:chargeResponse>
+  </soap:Body>
+
+</soap:Envelope>
