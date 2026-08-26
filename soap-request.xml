@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope
+    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:pay="http://campuseats.io/partner/paybridge/v1">
+
+  <!-- ===================== HEADER ===================== -->
+  <!-- Message-level security: partner credentials travel in the
+       Header, NOT in the Body, so they never touch business logic. -->
+  <soapenv:Header>
+    <pay:Security>
+      <pay:MerchantId>CAMPUSEATS-MERCH-2091</pay:MerchantId>
+      <pay:ApiKey>pk_live_7f2a9c31e6b4d0aa5c88</pay:ApiKey>
+      <pay:Timestamp>2026-08-26T10:15:32Z</pay:Timestamp>
+    </pay:Security>
+  </soapenv:Header>
+
+  <!-- ===================== BODY ===================== -->
+  <!-- Actual business call: charge a student's order to their card. -->
+  <soapenv:Body>
+    <pay:ChargeRequest>
+      <pay:OrderId>CE-ORD-100482</pay:OrderId>
+      <pay:Amount currency="INR">349.00</pay:Amount>
+      <pay:CardToken>tok_9f83ad11cc4e42b1</pay:CardToken>
+      <pay:CustomerRef>CE-STU-33217</pay:CustomerRef>
+      <pay:Description>CampusEats Order #100482 - Canteen B</pay:Description>
+    </pay:ChargeRequest>
+  </soapenv:Body>
+
+</soapenv:Envelope>
