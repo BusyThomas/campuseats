@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<soap:Envelope
+    xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:pay="http://example.com/paysecure/payment">
+
+    <soap:Body>
+        <soap:Fault>
+
+            <faultcode>soap:Client</faultcode>
+
+            <faultstring>Payment was declined</faultstring>
+
+            <detail>
+                <pay:card_declined>
+                    The payment could not be authorized.
+                </pay:card_declined>
+            </detail>
+
+        </soap:Fault>
+    </soap:Body>
+
+</soap:Envelope>
