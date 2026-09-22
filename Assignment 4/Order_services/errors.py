@@ -14,10 +14,6 @@ def problem(status: int, title: str, detail: str, problem_type: str | None = Non
 def validate(data):
     """
     Validate a create-order request before app.py touches request fields.
-
-    Returns:
-        (True, None) when valid
-        (False, error_detail) when malformed
     """
     if not isinstance(data, dict):
         return False, "Request body must be a JSON object."

@@ -66,6 +66,19 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
 
+    options:
+      summary: Describe supported methods for orders
+      operationId: ordersOptions
+      responses:
+        '204':
+          description: No content. The Allow header lists supported methods.
+          headers:
+            Allow:
+              description: Methods supported by the /orders resource.
+              schema:
+                type: string
+                example: GET, POST, OPTIONS
+
   /orders/{orderId}:
     get:
       summary: Get an order
