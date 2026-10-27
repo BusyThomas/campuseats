@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CampusEats - Menu (GraphQL)</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f4f6f8; margin: 0; padding: 24px; color: #222; }
+    .wrap { max-width: 640px; margin: 0 auto; }
+    h1 { margin: 0 0 4px; }
+    .sub { color: #666; margin: 0 0 20px; font-size: 14px; }
+    .card { background: #fff; border-radius: 8px; padding: 16px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 8px; border-bottom: 1px solid #eee; font-size: 14px; }
+    th { background: #fafafa; }
+    .yes { color: #1a8a3a; font-weight: bold; }
+    .no { color: #c0392b; font-weight: bold; }
+    form { display: flex; gap: 8px; flex-wrap: wrap; }
+    input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; flex: 1; min-width: 120px; }
+    button { padding: 8px 16px; border: 0; border-radius: 4px; background: #e67e22; color: #fff; font-size: 14px; cursor: pointer; }
+    button:hover { background: #cf6d17; }
+    #msg { margin-top: 10px; font-size: 13px; min-height: 18px; }
+    .err { color: #c0392b; }
+    .ok { color: #1a8a3a; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>CampusEats Menu</h1>
+  <p class="sub">Assignment 7 - data comes from a GraphQL API (MySQL behind it)</p>
+
+  <div class="card">
+    <table>
+      <thead><tr><th>ID</th><th>Name</th><th>Price (Rs.)</th><th>Available</th></tr></thead>
+      <tbody id="rows"><tr><td colspan="4">Loading...</td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Add a dish</h3>
+    <form id="addForm">
+      <input id="name" placeholder="Dish name" required>
+      <input id="price" type="number" step="0.01" min="0" placeholder="Price" required>
+      <button type="submit">Add Dish</button>
+    </form>
+    <div id="msg"></div>
+  </div>
+</div>
+
+<script>
+  const API = "/graphql";
+
+  async function gql(query, variables) {
+    const res = await fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query, variables }),
+    });
+    const json = await res.json();
+    if (json.errors) throw new Error(json.errors[0].message);
+    return json.data;
+  }
+
+  const LIST_QUERY = `query { dishes { id name price available } }`;
+  const ADD_MUTATION = `mutation ($input: AddDishInput!) { addDish(input: $input) { id name price } }`;
+
+  async function loadDishes() {
+    const tbody = document.getElementById("rows");
+    try {
+      const data = await gql(LIST_QUERY);
+      tbody.textContent = "";
+      data.dishes.forEach((d) => {
+        const tr = document.createElement("tr");
+        const cells = [d.id, d.name, d.price.toFixed(2)];
+        cells.forEach((c) => { const td = document.createElement("td"); td.textContent = c; tr.appendChild(td); });
+        const av = document.createElement("td");
+        av.textContent = d.available ? "Yes" : "No";
+        av.className = d.available ? "yes" : "no";
+        tr.appendChild(av);
+        tbody.appendChild(tr);
+      });
+    } catch (e) {
+      tbody.innerHTML = '<tr><td colspan="4" class="err"></td></tr>';
+      tbody.querySelector("td").textContent = "Could not load dishes: " + e.message;
+    }
+  }
+
+  document.getElementById("addForm").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const msg = document.getElementById("msg");
+    const name = document.getElementById("name").value.trim();
+    const price = parseFloat(document.getElementById("price").value);
+    try {
+      const data = await gql(ADD_MUTATION, { input: { name, price } });
+      msg.className = "ok";
+      msg.textContent = `Added "${data.addDish.name}" (id ${data.addDish.id})`;
+      ev.target.reset();
+      loadDishes();
+    } catch (e) {
+      msg.className = "err";
+      msg.textContent = "Error: " + e.message;
+    }
+  });
+
+  loadDishes();
+</script>
+</body>
+</html>

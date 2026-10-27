@@ -1,0 +1,29 @@
+# CampusEats - Assignment 7 (GraphQL)
+# Entity: Dish  (maps to the FOOD_ITEM entity in our ER diagram)
+
+type Dish {
+  id: ID!
+  name: String!
+  description: String
+  price: Float!
+  available: Boolean!
+}
+
+input AddDishInput {
+  name: String!
+  price: Float!
+  description: String
+  available: Boolean
+}
+
+type Query {
+  "List all dishes"
+  dishes: [Dish!]!
+  "Get one dish by id (null if not found)"
+  dish(id: ID!): Dish
+}
+
+type Mutation {
+  "Add a new dish to the menu"
+  addDish(input: AddDishInput!): Dish!
+}
