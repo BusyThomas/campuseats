@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusEats | Campus Food Ordering</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+```
+<header>
+    <h1>🍔 CampusEats</h1>
+    <p>Your Campus, Your Cravings!</p>
+</header>
+
+<main>
+    <section class="menu-section">
+        <h2>Our Menu</h2>
+        <p class="subtitle">Explore delicious food available on campus.</p>
+
+        <div id="items-container" class="items-grid">
+            Loading menu...
+        </div>
+    </section>
+
+    <section class="form-section">
+        <h2>➕ Add New Food Item</h2>
+
+        <form id="item-form">
+            <input type="text" id="name" placeholder="Food Name" required>
+
+            <input type="number" id="price" placeholder="Price (₹)" min="0" step="0.01" required>
+
+            <label class="availability">
+                <input type="checkbox" id="available" checked>
+                Available
+            </label>
+
+            <button type="submit">Add Food Item</button>
+        </form>
+
+        <p id="message"></p>
+    </section>
+</main>
+
+<footer>
+    <p>© 2026 CampusEats | CS543 Web Services Assignment 8</p>
+</footer>
+
+<script>
+    const API_URL = '/items';
+
+    // Fetch and display all items
+    async function loadItems() {
+        const container = document.getElementById('items-container');
+
+        try {
+            const response = await fetch(API_URL);
+            if (!response.ok) throw new Error('Failed to load menu');
+
+            const items = await response.json();
+
+            container.innerHTML = '';
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'food-card';
+
+                card.innerHTML = `
+                    <h3>${item.name}</h3>
+                    <p class="price">₹${item.price}</p>
+                    <span class="${item.available ? 'available' : 'unavailable'}">
+                        ${item.available ? 'Available' : 'Out of Stock'}
+                    </span>
+                `;
+
+                container.appendChild(card);
+            });
+
+        } catch (error) {
+            container.textContent = 'Unable to load menu.';
+            console.error(error);
+        }
+    }
+
+    // Add new item using POST
+    document.getElementById('item-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('name').value.trim();
+        const price = Number(document.getElementById('price').value);
+        const available = document.getElementById('available').checked;
+
+        const message = document.getElementById('message');
+
+        if (!name || !Number.isFinite(price) || price < 0) {
+            message.textContent = 'Please enter valid food details.';
+            return;
+        }
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, price, available })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                message.textContent = result.error;
+                return;
+            }
+
+            message.textContent = 'Food item added successfully!';
+
+            document.getElementById('item-form').reset();
+
+            loadItems();
+
+        } catch (error) {
+            message.textContent = 'Something went wrong!';
+            console.error(error);
+        }
+    });
+
+    // Load menu when page opens
+    loadItems();
+</script>
+```
+
+</body>
+</html>
